@@ -15,6 +15,7 @@ $x_name = "hoge";
 $image_path = "./index.png";
 $starttitle = "NextIP v6 - daka.stars.ne.jp mirror";
 $fake_title = 'NextIP v6 - daka.stars.ne.jp mirror';
+$title = $fake_title;
 $fake_favicon = './favicon.ico';
 $activetk_minjs = "https://raw.githubusercontent.com/Ok-kun318/NEXTIPv6-modified/refs/heads/main/ActiveTK.min.js";
 $decp = "フィルタリングの回避ができます。ブログやYouTubeの閲覧も可能です！スマホやiPad、ChromeBook、3DSなど機種を問わずご利用頂けます。";
@@ -142,10 +143,6 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
         die("不正な形式のURLです。<br>URLが正しいか(http[s]://から指定しているかなど)をご確認下さい。");
     }
 
-    // Googleセーフブラウジングの検証
-    // $anz = is_safe_browse($url); // ←この機能は省略または実装が必要
-
-    // if ($anz != "None") { ...（警告ページ部分省略 or 必要なら実装）... }
 
     if (isset($_POST["js"]) && $_POST["js"] == "false" || strpos(strtoupper($url), 'CHIEBUKURO.YAHOO.CO.JP') !== false) {
         header("Content-Security-Policy: script-src 'nonce-{$nonce}' 'strict-dynamic'");
@@ -217,27 +214,27 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
 
     if (isset($_POST["mode"]) && $_POST["mode"] == "text") {
         ?>
-                                      <html>
-                                        <head>
-                                          <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-                                          <meta charset='UTF-8'>
-                                          <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
-                                          <title>SourceCode of <?= htmlspecialchars($url) ?></title>
-                                          <meta name='author' content='<?php echo $fqdn ?>'>
-                                          <meta name='ROBOTS' content='noindex'>
-                                        </head>
-                                        <body style='background-color:#e6e6fa;color:#363636;overflow-x:hidden;overflow-y:visible;'>
-                                          <p align='center' style='color: #00008b;'>SourceCode of <a href='<?= htmlspecialchars($url) ?>' target='_blank' rel='noopener noreferrer'><?= htmlspecialchars($url) ?></a></p>
-                                          <pre><?= $header ?></pre><br>
-                                          <pre>
-                                          <?php
-                                          echo htmlspecialchars($html);
-                                          ?>
-                                          </pre>
-                                        </body>
-                                      </html>
-                                      <?php
-                                      die();
+                                              <html>
+                                                <head>
+                                                  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+                                                  <meta charset='UTF-8'>
+                                                  <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
+                                                  <title>SourceCode of <?= htmlspecialchars($url) ?></title>
+                                                  <meta name='author' content='<?php echo $fqdn ?>'>
+                                                  <meta name='ROBOTS' content='noindex'>
+                                                </head>
+                                                <body style='background-color:#e6e6fa;color:#363636;overflow-x:hidden;overflow-y:visible;'>
+                                                  <p align='center' style='color: #00008b;'>SourceCode of <a href='<?= htmlspecialchars($url) ?>' target='_blank' rel='noopener noreferrer'><?= htmlspecialchars($url) ?></a></p>
+                                                  <pre><?= $header ?></pre><br>
+                                                  <pre>
+                                                  <?php
+                                                  echo htmlspecialchars($html);
+                                                  ?>
+                                                  </pre>
+                                                </body>
+                                              </html>
+                                              <?php
+                                              die();
     } else {
 
         $headerx = curl_headers($header);
@@ -254,25 +251,25 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
             if (strpos($videocode, '&') !== false)
                 $videocode = substr($videocode, 0, strcspn($videocode, '&'));
             ?>
-                                                  <html>
-                                                    <head>
-                                                      <meta charset="UTF-8">
-                                                      <title>プライバシー強化モードYouTube</title>
-                                                      <!-- <script defer src="https://rinu.cf/pv/index.php?token=kaihi5cfuseyoutube&callback=console.log" nonce="<?= $nonce ?>"></script> -->
-                                                    </head>
-                                                    <body style="background-color:#6495ed;color:#080808;">
-                                                      <div align="center">
-                                                        <h1>プライバシー強化版YouTube - <?php echo $fqdn ?></h1>
-                                                        <p>プライバシー強化版のYouTube「YouTube-NoCookie」を利用して動画を表示するページです。</p>
-                                                        <br>
-                                                        <iframe width="854" height="480" src="https://www.youtube-nocookie.com/embed/<?= $videocode ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                      </div>
-                                                      <br><br><br>
-                                                      <hr size="1" color="#7fffd4">
-                                                    </body>
-                                                  </html>
-                                                <?php
-                                                exit();
+                                                              <html>
+                                                                <head>
+                                                                  <meta charset="UTF-8">
+                                                                  <title>プライバシー強化モードYouTube</title>
+                                                                  <!-- <script defer src="https://rinu.cf/pv/index.php?token=kaihi5cfuseyoutube&callback=console.log" nonce="<?= $nonce ?>"></script> -->
+                                                                </head>
+                                                                <body style="background-color:#6495ed;color:#080808;">
+                                                                  <div align="center">
+                                                                    <h1>プライバシー強化版YouTube - <?php echo $fqdn ?></h1>
+                                                                    <p>プライバシー強化版のYouTube「YouTube-NoCookie」を利用して動画を表示するページです。</p>
+                                                                    <br>
+                                                                    <iframe width="854" height="480" src="https://www.youtube-nocookie.com/embed/<?= $videocode ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                                  </div>
+                                                                  <br><br><br>
+                                                                  <hr size="1" color="#7fffd4">
+                                                                </body>
+                                                              </html>
+                                                            <?php
+                                                            exit();
         }
 
         header("X-Robots-Tag: noindex, nofollow");
@@ -298,13 +295,13 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
         }
         echo "-->\n";
         ?>
-                                <base href="<?= $url ?>">
-                                <meta name="robots" content="noindex, nofollow">
-                                <!-- Main -->
-                                <?= $html ?>
-                                <!-- /Main -->
-                                      <?php
-                                      exit();
+                                        <base href="<?= $url ?>">
+                                        <meta name="robots" content="noindex, nofollow">
+                                        <!-- Main -->
+                                        <?= $html ?>
+                                        <!-- /Main -->
+                                              <?php
+                                              exit();
     }
 }
 
@@ -336,10 +333,22 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
     <meta property="og:url" content="<?= $meurl ?>">
     <meta property="og:site_name" content="<?php echo $title; ?>">
     <meta property="og:locale" content="ja_JP">
-    <script src="<?php echo $activetk_minjs?>"></script>
+    <script src="<?php echo $activetk_minjs ?>"></script>
     <!-- <script src="https://daka.stars.ne.jp/jqery/jquery-3.7.1.min.js"></script> -->
     <!-- <script type="text/javascript" src="https://code.activetk.jp/ActiveTK.min.js"></script> -->
     <!-- <script defer src="https://rinu.cf/pv/index.php?token=kaihi5cfhome&callback=console.log"></script> -->
+     <script>
+function check() {
+  const input = document.getElementById("urlform").value.trim();
+  const select = document.getElementById("sor");
+
+  if (input.startsWith("https://")) {
+    select.selectedIndex = 0;
+  } else {
+    select.selectedIndex = 2;
+  }
+}
+</script>
          <script type="text/javascript">onload=function(){$("#m").click(function(){let n=_("more").style;"none"==n.display?(n.display="block",_("si").innerHTML="&lt; 詳細設定を非表示にする"):(n.display="none",_("si").innerHTML="&gt; 詳細設定を表示")})};</script>
 <style>a{color: #00ff00;position: relative;display: inline-block;transition: .3s;}a::after {position: absolute;bottom: 0;left: 50%;content: '';width: 0;height: 2px;background-color: #31aae2;transition: .3s;transform: translateX(-50%);}a:hover::after{width: 100%;}</style>
   </head>
@@ -349,12 +358,13 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
       <h1>NextIP v6 - <?php echo $fqdn ?> modified by Ok-kun318 </h1><br>
       <p>NextIPは、Web上で「curl」を実行することによりフィルタリング回避ができるツールです。<br>YouTubeやTwitter、Yahoo知恵袋などの閲覧も可能です。</p>
       <form action='' method='POST'>
-        <select name="htt" style="height:24px;">
+        <p>https://またはhttp://で始まらない場合は自動的に選択されます</p>
+        <select name="htt" id="sor" style="height:24px;">
           <option value="none">(None)</option>
           <option value="http">http://</option>
           <option value="https">https://</option>
         </select>
-        <input type='text' name='q' placeholder='ここにURLを入力してください' style="height:20px;width:500px;"><br><br>
+        <input  oninput="check()" id="urlform" type='text' name='q' placeholder='ここにURLを入力してください' style="height:20px;width:500px;"><br><br>
         <input type='submit' value='アクセス' style="height:60px;width:140px;">
         <br><br>
           プレビュー形式 : <select name="mode">
@@ -393,7 +403,7 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
           <input type='text' name='prk-port' size="8" placeholder='ポート'>
           <br><br>
           ※この回避サイト自体が検閲/規制されている場合、<br>
-          <a href="https://<?php echo $fqdn?>/contact" target="_blank">お問い合わせ</a>からご連絡下さい。
+          <a href="https://<?php echo $fqdn ?>/contact" target="_blank">お問い合わせ</a>からご連絡下さい。
           </div><br>
       </form>
       <br>
