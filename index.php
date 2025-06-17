@@ -16,7 +16,7 @@ $image_path = "./index.png";
 $starttitle = "NextIP v6 - daka.stars.ne.jp mirror";
 $fake_title = 'NextIP v6 - daka.stars.ne.jp mirror';
 $title = $fake_title;
-$fake_favicon = './favicon.ico';
+$fake_favicon = 'https://daka.stars.ne.jp/pro/favicon.ico';
 $activetk_minjs = "https://raw.githubusercontent.com/Ok-kun318/NEXTIPv6-modified/refs/heads/main/ActiveTK.min.js";
 $decp = "フィルタリングの回避ができます。ブログやYouTubeの閲覧も可能です！スマホやiPad、ChromeBook、3DSなど機種を問わずご利用頂けます。";
 $startua = "Mozilla/5.0 (Linux; AccessBot 6.0; PHP; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.4183.121";
@@ -199,12 +199,21 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
     $header = htmlspecialchars(substr($html, 0, $info["header_size"]));
     $html = substr($html, $info["header_size"]);
     curl_close($curl);
-
+    global $fake_favicon;
     // タイトル置換
     $html = preg_replace('/<title>(.*?)<\/title>/is', '<title>' . htmlspecialchars($fake_title, ENT_QUOTES) . '</title>', $html, 1);
-    // ファビコン挿入（head直後）
-    $html = preg_replace('/(<head.*?>)/is', '$1<link rel="icon" href="' . $fake_favicon . '">', $html, 1);
-
+    $html = preg_replace(
+        '/<link[^>]+rel="(shortcut )?icon"[^>]*>/i', // 既存のiconタグ削除
+        '',
+        $html
+    );
+    // head閉じタグの直前に挿入
+    $html = preg_replace(
+        '/<\/head>/i',
+        '<link rel="icon" href="'. $fake_favicon .'">' . "\n" . '</head>',
+        $html,
+        1
+    );
     if (isset($_GET["withcurl"])) {
         header("Content-Type: text/plain;charset=UTF-8");
         echo htmlspecialchars($header);
@@ -214,27 +223,27 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
 
     if (isset($_POST["mode"]) && $_POST["mode"] == "text") {
         ?>
-                                              <html>
-                                                <head>
-                                                  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-                                                  <meta charset='UTF-8'>
-                                                  <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
-                                                  <title>SourceCode of <?= htmlspecialchars($url) ?></title>
-                                                  <meta name='author' content='<?php echo $fqdn ?>'>
-                                                  <meta name='ROBOTS' content='noindex'>
-                                                </head>
-                                                <body style='background-color:#e6e6fa;color:#363636;overflow-x:hidden;overflow-y:visible;'>
-                                                  <p align='center' style='color: #00008b;'>SourceCode of <a href='<?= htmlspecialchars($url) ?>' target='_blank' rel='noopener noreferrer'><?= htmlspecialchars($url) ?></a></p>
-                                                  <pre><?= $header ?></pre><br>
-                                                  <pre>
-                                                  <?php
-                                                  echo htmlspecialchars($html);
-                                                  ?>
-                                                  </pre>
-                                                </body>
-                                              </html>
-                                              <?php
-                                              die();
+                                                              <html>
+                                                                <head>
+                                                                  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+                                                                  <meta charset='UTF-8'>
+                                                                  <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
+                                                                  <title>SourceCode of <?= htmlspecialchars($url) ?></title>
+                                                                  <meta name='author' content='<?php echo $fqdn ?>'>
+                                                                  <meta name='ROBOTS' content='noindex'>
+                                                                </head>
+                                                                <body style='background-color:#e6e6fa;color:#363636;overflow-x:hidden;overflow-y:visible;'>
+                                                                  <p align='center' style='color: #00008b;'>SourceCode of <a href='<?= htmlspecialchars($url) ?>' target='_blank' rel='noopener noreferrer'><?= htmlspecialchars($url) ?></a></p>
+                                                                  <pre><?= $header ?></pre><br>
+                                                                  <pre>
+                                                                  <?php
+                                                                  echo htmlspecialchars($html);
+                                                                  ?>
+                                                                  </pre>
+                                                                </body>
+                                                              </html>
+                                                              <?php
+                                                              die();
     } else {
 
         $headerx = curl_headers($header);
@@ -251,25 +260,25 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
             if (strpos($videocode, '&') !== false)
                 $videocode = substr($videocode, 0, strcspn($videocode, '&'));
             ?>
-                                                              <html>
-                                                                <head>
-                                                                  <meta charset="UTF-8">
-                                                                  <title>プライバシー強化モードYouTube</title>
-                                                                  <!-- <script defer src="https://rinu.cf/pv/index.php?token=kaihi5cfuseyoutube&callback=console.log" nonce="<?= $nonce ?>"></script> -->
-                                                                </head>
-                                                                <body style="background-color:#6495ed;color:#080808;">
-                                                                  <div align="center">
-                                                                    <h1>プライバシー強化版YouTube - <?php echo $fqdn ?></h1>
-                                                                    <p>プライバシー強化版のYouTube「YouTube-NoCookie」を利用して動画を表示するページです。</p>
-                                                                    <br>
-                                                                    <iframe width="854" height="480" src="https://www.youtube-nocookie.com/embed/<?= $videocode ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                                                  </div>
-                                                                  <br><br><br>
-                                                                  <hr size="1" color="#7fffd4">
-                                                                </body>
-                                                              </html>
-                                                            <?php
-                                                            exit();
+                                                                                      <html>
+                                                                                        <head>
+                                                                                          <meta charset="UTF-8">
+                                                                                          <title>プライバシー強化モードYouTube</title>
+                                                                                          <!-- <script defer src="https://rinu.cf/pv/index.php?token=kaihi5cfuseyoutube&callback=console.log" nonce="<?= $nonce ?>"></script> -->
+                                                                                        </head>
+                                                                                        <body style="background-color:#6495ed;color:#080808;">
+                                                                                          <div align="center">
+                                                                                            <h1>プライバシー強化版YouTube - <?php echo $fqdn ?></h1>
+                                                                                            <p>プライバシー強化版のYouTube「YouTube-NoCookie」を利用して動画を表示するページです。</p>
+                                                                                            <br>
+                                                                                            <iframe width="854" height="480" src="https://www.youtube-nocookie.com/embed/<?= $videocode ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                                                          </div>
+                                                                                          <br><br><br>
+                                                                                          <hr size="1" color="#7fffd4">
+                                                                                        </body>
+                                                                                      </html>
+                                                                                    <?php
+                                                                                    exit();
         }
 
         header("X-Robots-Tag: noindex, nofollow");
@@ -295,13 +304,13 @@ if (isset($_POST["q"]) && $_POST["q"] != "" || isset($_GET["q"])) {
         }
         echo "-->\n";
         ?>
-                                        <base href="<?= $url ?>">
-                                        <meta name="robots" content="noindex, nofollow">
-                                        <!-- Main -->
-                                        <?= $html ?>
-                                        <!-- /Main -->
-                                              <?php
-                                              exit();
+                                                        <base href="<?= $url ?>">
+                                                        <meta name="robots" content="noindex, nofollow">
+                                                        <!-- Main -->
+                                                        <?= $html ?>
+                                                        <!-- /Main -->
+                                                              <?php
+                                                              exit();
     }
 }
 
